@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="icon" href="{% static 'core/img/itssca2.png' %}" type="image/png" />
+    <link href="{% static 'core/vendor/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'core/css/landing-page.css' %}" type="text/css">
+    <link href="{% static 'core/vendor/font-awesome/css/font-awesome.min.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-light bg-light static-top" id="top">
+    <div class="container">
+        <a class="navbar-brand text-success" href="#top" style="text-shadow: 1px 1px lightgray">
+            <img src="{% static 'core/img/weather_icon.png' %}" alt="Image" height="40px" width="40px">
+            Where the weather
+        </a>
+    </div>
+</nav>
+
+<!-- Masthead -->
+<header class="masthead text-white text-center">
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <h1 class="mb-5" style="text-shadow: 1px 1px black">Add new cities to check the weather!</h1>
+            </div>
+            <div class="col-md-10 col-lg-8 col-xl-7 mx-auto">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            {{ form.name }}
+                        </div>
+                        <div class="control">
+                            <button type="submit" class="button bg-success text-light" style="text-shadow: 1px 1px black">
+                                Add City
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</header><br><br><br>
+<section>
+
+    <div class="container" id="city">
+        <div class="row">
+            <!-- Pie Chart Today-->
+            {% for city_weather in weather_data %}
+                <div class="col-md-4">
+                    <div class="card mb-4" style="box-shadow: lightgray 1px 1px;">
+                        <div class="card-header bg-success text-white" style="text-shadow: 1px 1px black">
+                            <i class="fa fa-globe" style="text-shadow: 1px 1px black"></i>      {{ city_weather.city }}
+                        </div>
+                        <div class="card-body">
+                            <figure class="icon-minus">
+                                <img src="http://openweathermap.org/img/w/{{ city_weather.icon }}.png" alt="Image">
+                            </figure>
+                            <p>
+                                <span class="title" style="text-shadow: 1px 1px gray">{{ city_weather.country }}, {{ city_weather.city }}</span><br>
+                                {#                                            <span class="title">{{ city_weather.city }}</span><br>#}
+                                <span class="subtitle">{{ city_weather.temperature }}° C</span><br>
+                                <span class="subtitle text-info">{{ city_weather.temp_min }}° C min</span> - <span class="subtitle text-danger">{{ city_weather.temp_max }}° C max</span><br>
+                                <span class="subtitle">{{ city_weather.humidity }}% Humidity</span><br>
+                                <span class="text-capitalize">{{ city_weather.description }}</span>
+                            </p>
+                        </div>
+                        <div class="card-footer small text-muted">Last updated {{ localtime }}</div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div><br>
+</section><br>
+
+<!-- Footer -->
+<footer class="footer bg-light">
+    <div class="container" id="contact">
+        <div class="row">
+            <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
+                <ul class="list-inline mb-2">
+                    <li class="list-inline-item">
+                        <a class="text-success" href="http://www.diegoporro.com/">
+                            <img src="{% static 'core/img/DP.png' %}" width="100px" height="100px">
+                        </a>
+                    </li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item">
+                        <a class="text-success" href="http://www.diegoporro.com/contact/">
+                            <b>Contact</b>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">&sdot;</li>
+                    <li class="list-inline-item"><p class="text-success"><b>V1.01</b></p></li>
+                </ul>
+            </div>
+            <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
+                <ul class="list-inline mb-0">
+                    <li class="list-inline-item mr-3">
+                        <a class="text-success" href="https://www.linkedin.com/in/diego-andr%C3%A9s-porro-vargas-25a546144/?locale=en_US" style="text-shadow: 1px 1px black">
+                            <i class="fa fa-linkedin fa-2x fa-fw"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item mr-3">
+                        <a class="text-success" href="https://twitter.com/_Porro" style="text-shadow: 1px 1px black">
+                            <i class="fa fa-twitter-square fa-2x fa-fw"></i>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="text-success" href="https://www.instagram.com/_porro/" style="text-shadow: 1px 1px black">
+                            <i class="fa fa-instagram fa-2x fa-fw"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <center>
+            <p class="text-muted small mb-4 mb-lg-0">&copy; Diego Porro {{ year }}. All Rights Reserved.</p>
+            <p class="text-muted small mb-4 mb-lg-0">Powered by IT Security Solutions C.A.</p>
+        </center>
+    </div>
+</footer>
+
+</body>
+</html>
+
